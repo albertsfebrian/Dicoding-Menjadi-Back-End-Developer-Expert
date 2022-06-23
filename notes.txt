@@ -1,0 +1,11 @@
+psql --username postgres
+CREATE DATABASE forumapi; CREATE DATABASE forumapi_test;
+GRANT ALL PRIVILEGES ON DATABASE forumapi, forumapi_test TO postgres;
+
+npm run migrate create "create table users"
+npm run migrate create "create table authentications"
+
+npm run migrate up
+npm run migrate:test up
+npm run test:watch
+npm run lint
