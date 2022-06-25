@@ -1,5 +1,3 @@
-const DeleteComment = require('../../Domains/comments/entities/DeleteComment');
-
 class DeleteCommentUseCase {
   constructor({ commentRepository, threadRepository }) {
     this._commentRepository = commentRepository;
@@ -7,7 +5,7 @@ class DeleteCommentUseCase {
   }
 
   async execute(useCasePayload) {
-    const { id, threadId, owner } = new DeleteComment(useCasePayload);
+    const { id, threadId, owner } = useCasePayload;
     await this._threadRepository.verifyAvailableThread(threadId);
     await this._commentRepository.verifyAvailableComment(id);
     await this._commentRepository.verifyCommentOwner(id, owner);
