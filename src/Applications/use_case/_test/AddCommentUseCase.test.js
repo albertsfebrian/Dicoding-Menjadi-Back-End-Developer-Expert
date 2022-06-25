@@ -7,7 +7,7 @@ const AddCommentUseCase = require('../AddCommentUseCase');
 describe('AddCommentUseCase', () => {
   it('should orchestrating the add comment action correctly', async () => {
     const useCasePayload = {
-      threadId: 'ini threadId',
+      threadId: 'thread-123',
       content: 'ini content',
       owner: 'user-123',
     };
