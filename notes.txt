@@ -1,8 +1,11 @@
 psql --username postgres
 CREATE DATABASE forumapi; CREATE DATABASE forumapi_test;
+DROP DATABASE forumapi; DROP DATABASE forumapi_test;
 
 npm run migrate create "create table users"
 npm run migrate create "create table authentications"
+npm run migrate create "create table threads"
+npm run migrate create "create table comments"
 
 npm run migrate up
 npm run migrate:test up

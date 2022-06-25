@@ -13,7 +13,6 @@ describe('AddThreadUseCase', () => {
     const expectedRegisteredThread = new RegisteredThread({
       id: 'thread-123',
       title: useCasePayload.title,
-      body: useCasePayload.body,
       owner: useCasePayload.owner,
     });
     const mockThreadRepository = new ThreadRepository();
