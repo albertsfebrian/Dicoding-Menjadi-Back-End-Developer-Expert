@@ -4,6 +4,10 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
+    thread_id: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+    },
     content: {
       type: 'TEXT',
       notNull: true,
@@ -12,18 +16,14 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
-    thread_id: {
-      type: 'VARCHAR(50)',
-      notNull: true,
-    },
-    date: {
-      type: 'TEXT',
-      notNull: true,
-    },
     is_deleted: {
       type: 'BOOLEAN',
       notNull: true,
       defaultValue: false,
+    },
+    date: {
+      type: 'TEXT',
+      notNull: true,
     },
   });
   pgm.addConstraint('comments', 'fk_comments.thread_id_threads.id', 'FOREIGN KEY(thread_id) REFERENCES threads(id) ON DELETE CASCADE');
