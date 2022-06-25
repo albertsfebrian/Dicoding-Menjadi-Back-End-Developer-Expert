@@ -9,3 +9,9 @@ npm run migrate up
 npm run migrate:test up
 npm run test:watch
 npm run lint
+
+========================
+CLRF -> LF
+git config core.autocrlf false 
+git rm --cached -r . 
+git reset --hard
