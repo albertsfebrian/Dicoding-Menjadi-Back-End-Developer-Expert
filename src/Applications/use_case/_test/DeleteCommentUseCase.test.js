@@ -1,4 +1,3 @@
-const DeleteComment = require('../../../Domains/comments/entities/DeleteComment');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const DeleteCommentUseCase = require('../DeleteCommentUseCase');
@@ -28,7 +27,7 @@ describe('DeleteCommentUseCase', () => {
     });
 
     await deleteCommentUseCase.execute(useCasePayload);
-    const { id, threadId, owner } = new DeleteComment(useCasePayload);
+    const { id, threadId, owner } = useCasePayload;
     expect(mockCommentRepository.verifyAvailableComment).toBeCalledWith(id);
     expect(mockCommentRepository.verifyCommentOwner).toBeCalledWith(id, owner);
     expect(mockCommentRepository.deleteComment).toBeCalledWith(id);
