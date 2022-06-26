@@ -66,6 +66,24 @@ class CommentRepositoryPostgres extends CommentRepository {
       throw new InvariantError('Gagal memperbarui komentar');
     }
   }
+
+  async getCommentsByThreadId(threadId) {
+    const query = {
+      text: `
+        SELECT comments.id, comments.date, comments.content, comments.is_deleted, users.username FROM comments
+        LEFT JOIN users ON users.id = comments.owner
+        WHERE thread_id = $1
+        ORDER BY comments.date ASC
+      `,
+      values: [threadId],
+    };
+
+    const result = await this._pool.query(query);
+    if (result.rows.length === 0) {
+      throw new InvariantError('Gagal mendapatkan comment');
+    }
+    return result.rows;
+  }
 }
 
 module.exports = CommentRepositoryPostgres;
