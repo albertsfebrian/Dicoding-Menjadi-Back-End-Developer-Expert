@@ -3,6 +3,25 @@ const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const DeleteCommentUseCase = require('../DeleteCommentUseCase');
 
 describe('DeleteCommentUseCase', () => {
+  it('should throw error if use case payload not contain valid payload', async () => {
+    const getThreadUserUseCase = new DeleteCommentUseCase({});
+    await expect(getThreadUserUseCase.execute({}))
+      .rejects
+      .toThrowError('DELETE_COMMENT_USE_CASE.NOT_CONTAIN_VALID_PAYLOAD');
+  });
+
+  it('should throw error if valid payload not in correct type', async () => {
+    const useCasePayload = {
+      id: 123,
+      threadId: true,
+      owner: [],
+    };
+    const getThreadUserUseCase = new DeleteCommentUseCase({});
+    await expect(getThreadUserUseCase.execute(useCasePayload))
+      .rejects
+      .toThrowError('DELETE_COMMENT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
+  });
+
   it('should orchestrating the add comment action correctly', async () => {
     const useCasePayload = {
       id: 'comment-123',
