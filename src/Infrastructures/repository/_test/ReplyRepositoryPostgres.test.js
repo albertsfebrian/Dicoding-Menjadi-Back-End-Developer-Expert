@@ -118,4 +118,20 @@ describe('ReplyRepositoryPostgres', () => {
         .resolves.not.toThrowError(InvariantError);
     });
   });
+
+  describe('getRepliesByCommentId function', () => {
+    it('should not throw InvariantError when query run correctly', async () => {
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123', threadId: 'thread-123', owner: 'user-123' });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123', threadId: 'thread-123', commentId: 'comment-123', owner: 'user-123',
+      });
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      const reply = replyRepositoryPostgres.getRepliesByCommentId('comment-123');
+
+      await expect(reply).resolves.toHaveLength(1);
+    });
+  });
 });

@@ -68,6 +68,21 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       throw new InvariantError('Gagal memperbarui reply');
     }
   }
+
+  async getRepliesByCommentId(commentId) {
+    const query = {
+      text: `
+        SELECT replies.id, replies.date, replies.content, replies.is_deleted, users.username FROM replies
+        LEFT JOIN users ON users.id = replies.owner
+        WHERE comment_id = $1
+        ORDER BY replies.date ASC
+      `,
+      values: [commentId],
+    };
+
+    const result = await this._pool.query(query);
+    return result.rows;
+  }
 }
 
 module.exports = ReplyRepositoryPostgres;
