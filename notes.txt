@@ -6,6 +6,7 @@ npm run migrate create "create table users"
 npm run migrate create "create table authentications"
 npm run migrate create "create table threads"
 npm run migrate create "create table comments"
+npm run migrate create "create table replies"
 
 npm run migrate up
 npm run migrate:test up

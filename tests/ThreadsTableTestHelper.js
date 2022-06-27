@@ -25,7 +25,7 @@ const ThreadsTableTestHelper = {
   },
 
   async cleanTable() {
-    await pool.query('DELETE FROM users WHERE 1=1');
+    await pool.query('DELETE FROM threads WHERE 1=1');
   },
 };
 
