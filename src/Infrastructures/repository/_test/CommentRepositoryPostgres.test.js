@@ -104,13 +104,6 @@ describe('CommentRepositoryPostgres', () => {
   });
 
   describe('getCommentsByThreadId function', () => {
-    it('should throw InvariantError when something wrong', async () => {
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
-
-      await expect(commentRepositoryPostgres.getCommentsByThreadId('thread-123'))
-        .rejects.toThrowError(InvariantError);
-    });
-
     it('should not throw InvariantError when query run correctly', async () => {
       await UsersTableTestHelper.addUser({ id: 'user-123' });
       await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
@@ -120,7 +113,6 @@ describe('CommentRepositoryPostgres', () => {
       const comment = commentRepositoryPostgres.getCommentsByThreadId('thread-123');
 
       await expect(comment).resolves.toHaveLength(1);
-      await expect(comment).resolves.not.toThrowError(InvariantError);
     });
   });
 });

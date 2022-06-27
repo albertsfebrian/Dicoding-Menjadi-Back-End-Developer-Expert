@@ -79,9 +79,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     };
 
     const result = await this._pool.query(query);
-    if (result.rows.length === 0) {
-      throw new InvariantError('Gagal mendapatkan comment');
-    }
     return result.rows;
   }
 }
