@@ -86,6 +86,38 @@ const ServerTestHelper = {
       ...serverData, commentData: resCommentData,
     };
   },
+
+  async useServerCreateReply(args) {
+    // create user -> auth -> thread -> comments -> reply
+    const {
+      threadData = {}, userData = {}, commentData = {}, replyData = {},
+    } = args || {};
+    const serverData = await this.useServerCreateComment({
+      threadData,
+      commentData,
+      userData,
+    });
+    const {
+      server, headers, threadData: resThreadData, commentData: resCommentData,
+    } = serverData;
+    const { id: threadId } = resThreadData;
+    const { id: commentId } = resCommentData;
+    const replyPayload = {
+      content: replyData?.content || 'ini content',
+    };
+    const reply = await server.inject({
+      method: 'POST',
+      url: `/threads/${threadId}/comments/${commentId}/replies`,
+      payload: replyPayload,
+      headers,
+    });
+
+    const replyResponse = JSON.parse(reply.payload);
+    const resReplyData = replyResponse.data.addedReply;
+    return {
+      ...serverData, replyData: resReplyData,
+    };
+  },
 };
 
 module.exports = ServerTestHelper;

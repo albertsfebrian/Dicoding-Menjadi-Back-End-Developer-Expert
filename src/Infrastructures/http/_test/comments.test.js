@@ -145,6 +145,21 @@ describe('/comments endpoint', () => {
       expect(responseJson.message).toEqual('Missing authentication');
     });
 
+    it('should response 404 when thread id is invalid', async () => {
+      const { server, headers } = await ServerTestHelper.useServerWithAuth();
+
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/threads/thread-159/comments/comment-123',
+        headers,
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('thread tidak tersedia');
+    });
+
     it('should response 404 when comment id is invalid', async () => {
       const {
         server, headers, threadData,

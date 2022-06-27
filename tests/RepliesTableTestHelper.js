@@ -2,7 +2,7 @@
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const RepliesTableTestHelper = {
-  async addComment({
+  async addReply({
     id = 'reply-123', content = 'ini content', threadId = 'thread-123', commentId = 'comment-123', owner = 'user-123',
   }) {
     const date = new Date().toISOString();
