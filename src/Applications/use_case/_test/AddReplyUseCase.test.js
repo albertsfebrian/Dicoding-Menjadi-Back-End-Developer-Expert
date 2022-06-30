@@ -23,7 +23,11 @@ describe('AddReplyUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     mockReplyRepository.addReply = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedRegisteredReply));
+      .mockImplementation(() => Promise.resolve(new RegisteredReply({
+        id: 'reply-123',
+        content: useCasePayload.content,
+        owner: useCasePayload.owner,
+      })));
     mockCommentRepository.verifyAvailableComment = jest.fn()
       .mockImplementation(() => Promise.resolve());
     mockThreadRepository.verifyAvailableThread = jest.fn()
