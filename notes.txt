@@ -1,11 +1,20 @@
 psql --username postgres
 CREATE DATABASE forumapi; CREATE DATABASE forumapi_test;
-GRANT ALL PRIVILEGES ON DATABASE forumapi, forumapi_test TO postgres;
+DROP DATABASE forumapi; DROP DATABASE forumapi_test;
 
 npm run migrate create "create table users"
 npm run migrate create "create table authentications"
+npm run migrate create "create table threads"
+npm run migrate create "create table comments"
+npm run migrate create "create table replies"
 
 npm run migrate up
 npm run migrate:test up
 npm run test:watch
 npm run lint
+
+========================
+CLRF -> LF
+git config core.autocrlf false 
+git rm --cached -r . 
+git reset --hard
