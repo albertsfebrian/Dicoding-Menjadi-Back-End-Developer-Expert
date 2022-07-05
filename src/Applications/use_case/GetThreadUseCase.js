@@ -2,10 +2,13 @@ const ThreadDetailComment = require('../../Domains/comments/entities/ThreadDetai
 const CommentDetailReplies = require('../../Domains/replies/entities/CommentDetailReplies');
 
 class GetThreadUseCase {
-  constructor({ threadRepository, commentRepository, replyRepository }) {
+  constructor({
+    threadRepository, commentRepository, replyRepository, likeRepository,
+  }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._likeRepository = likeRepository;
   }
 
   async execute(threadId) {
@@ -16,9 +19,10 @@ class GetThreadUseCase {
     thread.comments = await Promise.all(comments.map(async (comment) => {
       const threadDetailComment = new ThreadDetailComment(comment);
       const { id: commentId } = comment;
+      const likeCount = await this._likeRepository.getLikeCountByCommentId(commentId);
       const replies = await this._replyRepository.getRepliesByCommentId(commentId);
       const normalizeReplies = new CommentDetailReplies(replies).constructReplies();
-      return threadDetailComment.constructComment(normalizeReplies);
+      return threadDetailComment.constructComment(normalizeReplies, likeCount);
     }));
     return thread;
   }

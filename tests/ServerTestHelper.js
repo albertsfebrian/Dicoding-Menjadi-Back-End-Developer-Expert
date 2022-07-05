@@ -118,6 +118,27 @@ const ServerTestHelper = {
       ...serverData, replyData: resReplyData,
     };
   },
+
+  async useServerCreateLike(args) {
+    // create user -> auth -> thread -> comments -> like
+    const { threadData = {}, userData = {}, commentData = {} } = args || {};
+    const serverData = await this.useServerCreateComment({
+      threadData,
+      commentData,
+      userData,
+    });
+    const {
+      server, headers, threadData: resThreadData, commentData: resCommentData,
+    } = serverData;
+    const { id: threadId } = resThreadData;
+    const { id: commentId } = resCommentData;
+    await server.inject({
+      method: 'PUT',
+      url: `/threads/${threadId}/comments/${commentId}/likes`,
+      headers,
+    });
+    return serverData;
+  },
 };
 
 module.exports = ServerTestHelper;
