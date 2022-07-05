@@ -90,7 +90,7 @@ describe('/threads endpoint', () => {
   });
 
   describe('when GET /threads', () => {
-    it('should response 200 and thread created', async () => {
+    it('should response 200 and return thread data', async () => {
       const {
         server, threadData, commentData, userData,
       } = await ServerTestHelper.useServerCreateComment();

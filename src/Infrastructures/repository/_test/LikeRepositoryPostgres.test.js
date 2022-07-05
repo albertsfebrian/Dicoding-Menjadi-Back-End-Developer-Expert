@@ -82,4 +82,26 @@ describe('LikeRepositoryPostgres', () => {
         .resolves.not.toThrowError(InvariantError);
     });
   });
+
+  describe('getLikeCountByCommentId function', () => {
+    it('should throw 0 when like in comment not available', async () => {
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
+
+      await expect(likeRepositoryPostgres.getLikeCountByCommentId('comment-159'))
+        .resolves.toStrictEqual(0);
+    });
+
+    it('should return like count when like in comment available', async () => {
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123', threadId: 'thread-123', owner: 'user-123' });
+      await LikesTableTestHelper.addLike({
+        id: 'like-123', threadId: 'thread-123', commentId: 'comment-123', owner: 'user-123',
+      });
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
+
+      await expect(likeRepositoryPostgres.getLikeCountByCommentId('comment-123'))
+        .resolves.toStrictEqual(1);
+    });
+  });
 });
