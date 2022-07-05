@@ -1,6 +1,7 @@
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
+const LikeRepository = require('../../../Domains/likes/LikeRepository');
 const GetThreadUseCase = require('../GetThreadUseCase');
 
 describe('GetThreadUseCase', () => {
@@ -66,12 +67,14 @@ describe('GetThreadUseCase', () => {
               content: 'ini content',
             },
           ],
+          likeCount: 1,
         },
       ],
     };
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockRepliesRepository = new ReplyRepository();
+    const mockLikesRepository = new LikeRepository();
 
     mockThreadRepository.verifyAvailableThread = jest.fn()
       .mockImplementation(() => Promise.resolve());
@@ -81,11 +84,14 @@ describe('GetThreadUseCase', () => {
       .mockImplementation(() => Promise.resolve(commentData));
     mockRepliesRepository.getRepliesByCommentId = jest.fn()
       .mockImplementation(() => Promise.resolve(replyData));
+    mockLikesRepository.getLikeCountByCommentId = jest.fn()
+      .mockImplementation(() => Promise.resolve(1));
 
     const getThreadUseCase = new GetThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockRepliesRepository,
+      likeRepository: mockLikesRepository,
     });
 
     const registeredThread = await getThreadUseCase.execute(threadId);
@@ -95,5 +101,6 @@ describe('GetThreadUseCase', () => {
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
     expect(mockRepliesRepository.getRepliesByCommentId).toBeCalledWith(commentData[0].id);
+    expect(mockLikesRepository.getLikeCountByCommentId).toBeCalledWith(commentData[0].id);
   });
 });

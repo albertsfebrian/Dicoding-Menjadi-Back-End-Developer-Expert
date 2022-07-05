@@ -16,7 +16,7 @@ class ThreadDetailComment {
     }
   }
 
-  constructComment(replies) {
+  constructComment(replies, likeCount) {
     const {
       id, username, content, date, is_deleted,
     } = this._comment;
@@ -25,6 +25,7 @@ class ThreadDetailComment {
       username,
       date,
       content: is_deleted ? '**komentar telah dihapus**' : content,
+      likeCount,
       replies,
     };
   }
